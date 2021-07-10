@@ -1,0 +1,38 @@
+- common roles:
+    ** ec2 instance roles
+    ** lambda function roles
+    ** roles for cloudformation
+
+- IMA credentials report (account-level)
+    ** a report lists all your account's users and the status of their various credentials.
+
+- IMA access advisor (user-level)
+    ** shows the service permissions granted to a user and when those services were last accessed.
+
+- audit permissions of your account with the IAM credentials report
+
+
+## EC2
+- sizing and configuration
+    ** cpu, ram
+    ** storage: instance store vs ebs/efs
+    ** network card
+    ** firewall
+    ** bootstrap script (EC2 user data)
+
+- ec2 user data script runs with the root user (sudo needed)
+
+- when you start an instance after stopped it, the public IP v4 address will be changed.
+
+- if your application is not accessible, it's a security group issue.
+
+- if your application gives "connection refused", then it's an application error or it's not launched.
+
+- EC2 instance connect (ssh to ec2 via browser)
+
+- when you first download a file from aws, the permission is 0644 and that's too open.
+
+- ssh -i <pem file> ec2-user@<ec2-public-ipaddress>
+
+- ec2 instance connect still effected by security group, if you remove ssh security group, you will only get a black screen.
+
