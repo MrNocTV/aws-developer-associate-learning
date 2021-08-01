@@ -1,0 +1,134 @@
+- Amazon EC2 Auto Scaling works with both Application Load Balancer and Network Load Balancer
+- Amazon EC2 Auto Scaling cannot add a volume to an existing instance if the existing volume is approaching capacity.
+
+- In the ecs.config file you have to configure the parameter ECS_CLUSTER='your_cluster_name' to register the container instance with a cluster named 'your_cluster_name'.
+
+- Use Resource-based policies and AWS Identity and Access Management (IAM) policies for programmatic-only access to S3 bucket objects 
+- Use Resource-based Access Control List (ACL) and IAM policies for programmatic-only access to S3 bucket objects
+- Use Cross-account IAM roles for programmatic and console access to S3 bucket objects
+- Stage Variables: Stage variables are name-value pairs that you can define as configuration attributes associated with a deployment stage of an API. They act like environment variables and can be used in your API setup and mapping templates.
+
+- Amazon S3: If two writes are made to a single non-versioned object at the same time, it is possible that only a single event notification will be sent.
+
+- Which section of cloud formation does not allow condition: parameters
+
+- SQS max message size is 256KB.
+
+- member accounts will be able to see the Organization trail, but cannot modify or delete it.
+- by default, CloudTrail tracks only bucket-level actions, to track object-level actions, you need to enable Amazon S3 data events.
+- A multi-national company maintains separate AWS accounts for different verticals in their organization. The project manager of a team wants to migrate the Elastic Beanstalk environment from Team A's AWS account into Team B's AWS account. As a Developer, you have been roped in to help him in this process: 
+    -- create a saved configuration in Team A's account and download it to your local machine. Make the account-specific parameter changes and upload to the S3 bucket in Team B's account. From Elastic Beanstalk console, create an application from 'Saved Configurations'
+
+- To use the exported value in another stack, use *!ImportValue*
+
+!Ref - Returns the value of the specified parameter or resource.
+
+!GetAtt - Returns the value of an attribute from a resource in the template.
+
+!Sub - Substitutes variables in an input string with values that you specify.
+
+!Join - This function appends a set of values into a single value, separated by the specified delimiter
+
+- If you upload a local template file, AWS CloudFormation uploads it to an Amazon Simple Storage Service (Amazon S3) bucket in your AWS account. If you don't already have an S3 bucket that was created by AWS CloudFormation, it creates a unique bucket for each region in which you upload a template file
+
+- CodeDeploy Deployment Groups : You can specify one or more deployment groups for a CodeDeploy application. The deployment group contains settings and configurations used during the deployment
+
+- You can configure a Lambda function to connect to private subnets in a virtual private cloud (VPC) in your account. Use Amazon Virtual Private Cloud (Amazon VPC) to create a private network for resources such as databases, cache instances, or internal services. Connect your lambda function to the VPC to access private resources during execution. When you connect a function to a VPC, Lambda creates an elastic network interface for each combination of the security group and subnet in your function's VPC configuration
+
+- Consider using Global tables if your application is accessed by globally distributed users - If you have globally dispersed users, consider using global tables. With global tables, you can specify the AWS Regions where you want the table to be available. This can significantly reduce latency for your users.
+
+- During rollback which of the following instances did AWS CodeDeploy deploy first to: failed instances
+
+- If you terminate a container instance while it is in the STOPPED state, that container instance isn't automatically removed from the cluster. You will need to deregister your container instance in the STOPPED state by using the Amazon ECS console or AWS Command Line Interface. Once deregistered, the container instance will no longer appear as a resource in your Amazon ECS cluster.
+
+- By default, the health check configuration of your Auto Scaling group is set as an EC2 type that performs a status check of EC2 instances. To automate the replacement of unhealthy EC2 instances, you must change the health check type of your instance's Auto Scaling group from EC2 to ELB by using a configuration file.
+
+- by default, scripts entered as user data are executed with root user privileges
+- by default, user data runs only during the boot cycle when you first launch an instance
+
+- assign permissions to services using IAM roles
+
+- iam credentials report (account level), iam access advisor (user level)
+
+- ec2 instance connect works only out of the box with Amazon Linux 2
+
+- by default only the root EBS volume is deleted, any other attached EBS volume is not deleted
+
+- not necessary to detach volume to do snapshot, but recommended.
+
+- can copy snapshots across AZ or region
+
+- AMI are built for a specific region (and like EBS, it can be copied across regions)
+
+- EBS volume type: gp2/gp3 (general ssd), io1/io2 (high performance ssd), st1 (low cost hdd), sc1 (lowest cost hdd)
+
+- only gp2/gp3 and io1/io2 can be used as boot volumes
+
+- gp2/gp3 : PIOPS (Provisioned IOPS) increase along side with storage size
+- io1/io2 : PIOPS can increase independently with storage size -> for applications that need more than 16000 IOPS
+
+- *io1/io2 can be attached to multple EC2 instances in the same AZ*.
+
+- uses security group to control access to EFS
+
+- EFS is only compatible with Linux based AMI (not windows)
+
+- EFS-IA (infrequently access)
+
+- EBS backups use IO and you shouldn't run them while your application is handling a lot of traffic.
+
+- you can setup private or public ELB
+
+- ALB (application load balancer) supports load balancing to multiple applications on the same machine (containers), support Websocket and HTTP/2
+
+- ALB has a port mapping feature to redirect to a dynamic port in ECS
+
+- In comparison, we’d need multiple Classic Load Balancer per application
+
+- ALB can route to multiple target groups, health checks are at the target group level
+
+- NLB (Network Load Balancer) has one static IP per AZ , and supports assigning Elastic IP.
+
+- stickiness works for CLB and ALB
+
+- cross-zone load balancing: requests are distributed evenly across all registered instances in all AZ.
+
+- cross-zone load balancing always on for ALB, enable by default through console for classic load balancer, disable by default for network load balancer
+
+- load balancer use X.509 certificate
+
+- SNI (Server Name Indication) to support multiple certs for multiple domains
+
+- SNI solves the problem of loading multiple SSL certificates onto one web server, it's a "newer" protocol and requires the client to indicate the hostname of the target server in the initial SSL handshake
+
+- SNI only works for newer genration load balancer (ALB, NLB)
+
+- Connection draining (CLB) , deregistration delay (ALB, NLB) : time to complete in-flight requests while the instance is de-registering or unhealthy
+
+- it's possible to scale an ASG based on CloudWatch Alarm
+
+- it's now possible to define "better" auto scaling rules that are directly managed by EC2.
+
+- ASG can terminate instances that are marked as unhealthy by LB (hence replace them)
+
+- the cooldown period helps to ensure that your Auto Scaling group doesn't launch or terminate additional instances before the previous scaling activity takes effect.
+
+- In AWS there’s a network cost when data goes from one AZ to another
+
+- RDS read replica: async, RDS disaster recovery: sync
+
+- If the master is not encrypted, the read replicas cannot be encrypted
+
+- IAM-based authentication can be used to login into RDS MySQL & PostgreSQL (Aurora )
+
+- RDS encryption at rest is done only when you first create the DB instance
+
+- aurora writer endpoint, reader endpoint
+
+• In AWS, the most common records are: 
+• A: hostname to IPv4
+• AAAA: hostname to IPv6
+• CNAME: hostname to hostname (only works with non root domain)
+• Alias: hostname to AWS resource. (works with root and non root domain)
+
+- if multiple values are returned, a random one is chosen by the client
