@@ -132,3 +132,122 @@
 • Alias: hostname to AWS resource. (works with root and non root domain)
 
 - if multiple values are returned, a random one is chosen by the client
+
+- NAT gateways & NAT Instances allow your instances in your Private Subnets to access the internet while remaining private
+
+- Endpoints allow you to connect to AWS Services using a private network instead of the public www network
+
+- buckets must have a globally unique name
+
+- S3 max object size is 5TB, upload more than 5GB must use multipart upload
+
+- any files that is not versioned prior to enabling versioning will have version "null"
+
+- suspending versioning does not delete the previous versions
+
+- There are 4 methods of encrypting objects in S3:
+    + SSE-S3: keys handled and managed by S3, Must set header: “x-amz-server-side-encryption": "AES256"
+    + SSE-KMS: keys handled and managed by KMS, Must set header: “x-amz-server-side-encryption": ”aws:kms"
+    + SSE-C: key is managed by client, HTTPS must be used
+    + Client side encryption
+
+- User based: IAM
+- Resources based: Bucket policies, Object access control list, bucket access control list
+- use s3 bucket policy to :
+    + grant public access to the bucket
+    + force objects to be encrypted at upload
+    + grant access to another account
+
+- s3 access logs can be stored in other S3 bucket
+
+• <bucket-name>.s3-website-<AWS-region>.amazonaws.com
+
+- S3 strong consistency as of Dec 2020.
+
+- never ever put your credentials on an EC2 using `aws configure`, assign IAM roles to EC2 instances instead.
+
+- use --dry-run to check if we have the permissions to run the command.
+
+- when you run API calls and they fail, you can get a long error message/
+
+- this error message can be decoded using the STS commandline: *sts decode-authorization-message*
+
+- EC2 Instance metadata: allows EC2 to learn about themselves without using an IAM role. http://169.254.169.254/latest/meta-data
+
+- to use MFA with CLI, you must run STS GetSessionToken API call
+- aws sts get-session-token --serial-number arn-of-the-mfa-device --token-code code-from-token --duration-seconds 3600
+
+- when use SDK, if region is not set, it is *us-east-1* by default.
+
+- You can request a service limit increase by opening a ticket
+
+- You can request a service quota increase by using the Service Quotas API
+
+- AWS CLI credentials chain:
+    + command line options
+    + environment variables
+    + ~/.aws/credentials -> ~/.aws/config
+    + container credentials (ec2 tasks)
+    + instance profile credentials (ec2 instance profiles)
+
+- AWS HTTP request should use Signature V4 (SigV4) for signing.
+
+- If you use the SDK or CLI, the HTTP requests are signed for you.
+
+- to use MFA, enable versioning on the S3 bucket.
+
+- Only the bucket owner (root account) can enable/disable MFA-Delete
+
+- you will need MFA to: permanently delete an object version, suspend versioning on the bucket.
+
+- S3 replication is async, bucket can be in different regions, accounts.
+
+- there is no chaining of replication, if bucket 1 has replication into bucket 2, which has replication into bucket 3, then objects created in bucket 1 are not replicated to bucket 3
+
+- each item in Glacier is called Archive, archives are stored in Vaults
+
+- 3,500 PUT/COPY/POST/DELETE and 5,500 GET/HEAD requests per second per prefix in a bucket
+
+- If you use SSE-KMS, you may be impacted by the KMS limits
+
+-  When you upload, it calls the GenerateDataKey KMS API, When you download, it calls the Decrypt KMS 
+
+- S3 transfer acceleration: Increase transfer speed by transferring file to an AWS edge location which will forward the data to the S3 bucket in the target region
+
+- S3 Byte-range fetch: Can be used to retrieve only partial data, Can be used to speed up downloads
+
+- s3 select, glacier select: retrieve less data using SQL by performing server side filtering (simple SQL statements)
+
+- S3 event notifications typically deliver events in seconds but can sometimes take a minute or longer
+- If two writes are made to a single non-versioned object at the same time, it is possible that only a single event notification will be sent
+- If you want to ensure that an event notification is sent for every successful write, you can enable versioning on your bucket.
+
+- AWS Athena: Serverless service to perform analytics directly against S3 files, Exam Tip: Analyze data directly on S3 => use Athena
+
+- CloudFront origins: S3, ALB, EC2, S3 website, any HTTP backend you want
+
+- CloudFront geo restriction: whitelist, blacklist
+
+- Cloudfront: greate for static content that must be available everywhere
+- S3 CRR : greate for dynamic content that needs to be available at low-latency in few regions.
+- You can invalidate part of the cache using the CreateInvalidation API
+
+- viewer protocol policy: redirect HTTP to HTTPS
+- origin policy: match viewer (http - http, https - https) or https only
+- s3 bucket websites dont support https.
+
+- signed url: individual files
+- signed cookies: multiple files
+
+- in your cloudfront distribution, create one or more trusted key groups
+- you generate your own private/public keys:
+    + private key will be used by your application to sign URLs
+    + public key will be used by CloudFront to verify URLs
+
+- three price classes: all, 200, 100
+
+- cloudfront origin groups: increase high-availability and do failover
+- origin group: one primary and one secondary
+- if the primary fails, the second one is used
+
+- cloudfront field level encryption: uses asymmetric encryption
