@@ -292,3 +292,81 @@
 
 - support multiple platforms: go, java, python,... if not supported, you can write your custom platform.
 
+- beanstalk deployment options: all at once, rolling, rolling with additional batches, immutables (deployment time is sorted in ascending order, immutables is the longest one)
+
+- blue/green deployment with route53 weighted policy and beanstalk's swap URL
+
+- deployment process: describe dependency, zip code -> beanstalk will deploy zip code to ec2 instances, resolve dependencies and start the application
+
+- beanstalk lifecycle policy: max 1000 app -> need to delete some, can set policy to delete, based on time (old versions) or space (too many versions)
+
+- beanstalk extensions: *.ebextensions* directory in the root of source code, resources managed by `.ebextensions` get deleted if the environment goes away
+
+- you can define CloudFormation resources in your .ebextensions to provision ElastiCache, an S3 bucket, anything you want
+
+- beanstalk environment cloning, cannot clone load balancer though, so we have to do a trick by creating new environment and use a cname swap with route53
+
+- beanstalk single docker: Dockerrun.aws.json (describe where the built docker image is)
+- beanstalk multi docker: required Dockerrun.aws.json at the root of source code, it is used to generate ECS task definition
+
+- beanstalk HTTPS:  .ebextensions/securelistener-alb.config
+
+- beanstalk custom platform: define platform.yaml file and build the platform using Packer software (opensource tool for creating AMI)
+
+- codepipeline: made of stages, each stage can have sequential actions and or parallel actions
+
+- manual approval can be defined at any stage
+
+- aws code deploy -> deploy to fleet of EC2 instances (not beanstalk, code pipeline can be deployed to code deploy or beanstalk)
+
+- each pipeline stage create an artifact, artifact go to S3 and be input of next stage
+
+- codebuild instruction is defined in *buildspec.yaml* file, must be at the root of your code
+    + 4 phases: install, prebuild, build, postbuild -> artifacts (to S3)
+
+- codebuild can be run locally for troubleshooting
+
+- builds can be defined within codepipeline or codebuild itself.
+
+- by default, codebuild are launched outside your VPC -> cannot access resources in a VPC -> you can specify a VPC configuration
+
+- code deploy : *appspec.yaml*, ec2 machine must be running code deploy agent
+
+- EC2 instances are grouped by deployment group
+
+- code deploy does not provision resources
+
+- code deploy appspec.yaml hooks: App stop, download bundle, before install, after install, app start, validate service
+
+- code deploy failed: instances will be at failed state, new deployments will first be deployed to failed state instances
+
+- If a roll back happens, CodeDeploy redeploys the last known good revision as a new deployment.
+
+- cloudformation stacks: separate of concern, vpc stacks, network stacks, app stacks
+
+- cloudformation templates have to be uploaded in S3 and then referenced in cloudformation
+
+- cant upload a cloudformation template, have to create a new one
+
+- cloudformation template components: 
+    + resources: aws resources (MANDATORY)
+    + parameters: dynamic inputs
+    + mapping: static variables
+    + outputs: declares optional outputs values that we can import into other stacks (if you export them first)
+    + conditions: used to control the creation of resources or outputs based on a condition
+    + metadata
+
+
+- aws resources form: AWS::aws-product-name::data-type-name
+
+- you cant delete a cloudformation stack if its outputs are being referenced by another cloudformation stack
+
+- !FindInMap [ MapName, TopLevelKey, SecondLevelKey ]
+
+- Fn::GetAtt : get attributes attached to any resources you create
+
+- nested stack: separate common components
+
+- cloudformation stackset: CRUD for stacks across multiple accounts and regions with a single operation
+
+- cloudformation drift: if you want to know if the infrastructure is changed manually, use cloudformation drift
