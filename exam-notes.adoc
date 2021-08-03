@@ -251,3 +251,44 @@
 - if the primary fails, the second one is used
 
 - cloudfront field level encryption: uses asymmetric encryption
+
+- the EC2 instances run a special AMI made specifically for ECS, it runs an ECS agent to reguster the instace with ECS cluster
+- ECS task: tell ECS how to run a docker container
+- ECS service: define how many tasks should be run and how they should be run   
+
+- ECS service with LB and dynamic port forwarding
+
+- AWS CLI v1 login command : $(aws ecr get-login --no-include-email --region eu-west-1)
+- AWS CLI v2 login command : aws ecr get-login-password --region eu-west-1 | docker login --username AWS -- password-stdin 1234567890.dkr.ecr.eu-west-1.amazonaws.com
+
+- Fargate: serverless, dont manage and provision EC2 instances, only need to create task definitions
+
+- EC2 instance profile: used by ECS agent 
+- ECS Task Role: allow each task to have specific role, use different roles for different service.
+
+- ECS task placement strategy
+    + instances match spec -> match constraints -> match strategy -> select instances
+    + *distinctInstance*: place each task on a different container instance
+    + *memberOf*: place task on instance satisfy an expression
+
+- ECS task placement constraints
+
+- ECS service scaling != EC2 Auto Scaling
+
+- A Capacity Provider is used in association with a cluster to determine the infrastructure that a task runs on
+- Fargate: FARGATE and FARGATE_SPOT capacity providers are added automatically
+- ECS: you need to associate the capacity provider with an auto-scaling group
+
++ ECS + EBS: cant be shared
++ ECS + EFS: can be shared
++ Bind mounts: share data between containers of the same task, Great for “sidecar” container pattern where the sidecar can be used to send metrics/logs to other destinations
+
+- We must configure the file */etc/ecs/ecs.config* with the cluster name
+- In case an EC2 instance (or you) cannot pull a Docker image, check IAM
+- Fargate tasks can have IAM Roles to execute actions against AWS
+
+- Beanstalk is free but you pay for the underlying instances
+- Beanstalks: application (with version) and environment name
+
+- support multiple platforms: go, java, python,... if not supported, you can write your custom platform.
+
