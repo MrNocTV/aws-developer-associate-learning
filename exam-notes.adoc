@@ -370,3 +370,31 @@
 - cloudformation stackset: CRUD for stacks across multiple accounts and regions with a single operation
 
 - cloudformation drift: if you want to know if the infrastructure is changed manually, use cloudformation drift
+
+- metrics have dimension (up to 10 dimension)
+
+- EC2 instance metrics have metrics every 5 minutes, with detailed monitoring, you get data every minute
+
+- EC2 memory usage is by default not pushed
+
+- cloudwatch custom metric resolution, standard: 1 minute, high resolution: 1 second
+
+- cloudwatch alarm high resolution: 10 or 30 sec
+
+- by default, no logs from your EC2 machine will go to cloudwatch, you need to run a cloudwatch agent on EC2 to push the log files you want
+
+- cloud watch log agent & unified agent
+
+- cloud watch logs can use filter expression, metrics filter can be used to trigger alarms.
+
+- cloudwatch events / event bridge: event bridge is the next evolution of cloudwatch events,
+    + default event bus: aws services
+    + partner event bus: 
+    + custom event bus:
+
+- EventBridge allows extension to add event buses for your custom applications and your third-party SaaS apps.
+
+- AWS X-Ray Visual analysis of our applications
+
+- X-ray daemon: low level UDP interceptor 
+
