@@ -759,3 +759,47 @@ KMS – Customer Master Key (CMK)Types
     • If you need child processes that return values to parent processes
 
 - AWS SES – Simple Email Service
+
+------ TEST 1 ------
+
+- AWS requires approximately 5 weeks of usage data to generate budget forcast.
+
+- exported output values in cloudformation must have unique name within a single region
+
+- elastic beanstalk will replace the failed instances with instances running the application version from the most recent successful deployment.
+
+- CodeCommit credential types:
+    + SSH Keys
+    + Git credentials
+    + AWS Access keys
+
+- Auto Scailing Group cannot span across multiple region
+- An ASG can contain EC2 in one or more AZ within a region
+- Amazon EC2 Auto Scaling attempts to distribute instances evenly between the Availability Zones that are enabled for your Auto Scaling group
+
+- By default, IAM users do not have access to the AWS billing account and cost management, you can do this by activating IAM user access to the Billing and Cost Management console. 
+
+- Sampling rules tell the X-Ray SDK how many requests to record for a set of criteria.
+
+- The X-ray daemon logs could help with figuring out the problem
+
+- Elastic Load Balancing provides access logs that capture detailed information about requests sent to your load balancer.
+
+Some policies replace all instances during the deployment or update. This causes all accumulated Amazon EC2 burst balances to be lost. It happens in the following cases:
+    Managed platform updates with instance replacement enabled
+    Immutable updates
+    Deployments with immutable updates or traffic splitting enabled
+
+- AWS states that, if your AWS account is less than 12 months old, you can use a t2.micro instance for free within certain usage limits.
+
+- *A Load Balancer can target EC2 instances only within an AWS Region.*
+
+- These two policies only limit permission but cant grant permission:
+    + AWS Organizations Service Control Policy (SCP)
+    + Permission boundary
+
+- AWS IAM Access Analyzer helps you identify the resources in your organization and accounts, such as Amazon S3 buckets or IAM roles, that are shared with an external entity. This lets you identify unintended access to your resources and data, which is a security risk.
+
+-  IAM is used as a certificate manager only when you must support HTTPS connections in a Region that is not supported by ACM.
+
+- Access Advisor feature on IAM console- To help identify the unused roles, IAM reports the last-used timestamp that represents when a role was last used to make an AWS request. Your security team can use this information to identify, analyze, and then confidently remove unused roles.
