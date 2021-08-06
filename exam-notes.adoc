@@ -398,3 +398,364 @@
 
 - X-ray daemon: low level UDP interceptor 
 
+- By default, the X-Ray SDK records the first request each second, and five percent of any additional requests.
+
+- X-Ray write apis: PutTraceSegments, PutTelemetryRecords, GetSamplingRules
+
+- X-Ray read apis: GetServiceGraph, BatchGetTraces, GetTraceSummaries, GetTraceGraph
+
+- beanstalk x-ray config: *.ebextensions/xray-daemon.config*
+
+- Can put logs from CloudTrail into CloudWatch Logs or S3
+
+- A trail can be applied to all regions (default) or a single region
+
+- cloud trail events:
+    + management events
+    + data events: By default, data events are not logged
+    + cloudtrail insights events: detect unusual activity
+
+- Events are stored for 90 days in CloudTrail
+- To keep events beyond this period, log them to S3 and use Athena
+
+- SQS max 14 retention days
+
+- can have duplicate and out of order messages
+
+- SQS multiple consumers: consume in parallel, consumers delete message after processing them, scale consumer horizontally to increase throughput
+
+- SQS Access policy: cross account access, allow other services to write to an SQS queue
+
+- after a message is polled by a consumer, it becomes invisible to other consumers
+- by default, message visibility timeout is 30 seconds
+- after MaximumReceives threshold is exceeded, the message goes into a dead letter queue (DLQ)
+
+- sqs delay: delay a message up to 15 minutes before the consumers can see it (default is 0 seconds)
+
+- long polling: wait time can be 1 to 20 seconds
+
+- if message > 256kb, use sqs extended client (java library)
+
+- sqs fifo queue: limitied throughput, exactly-once send, messages are processed in order by the consumer
+
+- sqs fifo deduplication: 5 minutes interval, dedup by id or by content
+
+- messages that share a common message group id will be in order within the group
+
+- s3 events to multiple queue (sns + sqs fan out)
+
+- sns fifo (similar to sqs fifo): ordering + deduplicating, *can only have sqs fifo as subscriber*
+
+- sns message filtering with filter policy: subscriber only sees what they want
+
+- Kinesis Data Streams: capture, process, and store data streams
+- Kinesis Data Firehose: load data streams into AWS data stores
+- Kinesis Data Analytics: analyze data streams with SQL or Apache Flink
+- Kinesis Video Streams: capture, process, and store video streams
+
+- Once data is inserted in Kinesis, it can’t be deleted
+
+- Data that shares the same partition goes to the same shard
+
+- kinesis consumer: 
+    + classic fan-out consumers: 2MB/sec across all consumers, consumers pull data from kinesis
+    + enhanced fan-out consumers: 2MB/sec each consumer, kinesis pushs data to consumers
+- kinesis consumer lambda: read records in batch
+- kinesis client library: java libray, 1 shard = 1 kcl
+- kinesis shards splitting : to increase throughput because 1 shard has 1mb/s data
+- cant split into more than two shards in a single operation
+- kinesis shards merging: save costs, cant merge more than 2 shards in a single operation 
+
+- kinesis data firehose: near real time
+
+- kinesis data analytics: real time analytics on Kinesis Stream using SQL
+
+- ordering data into kinesis using `partition key` (like group id in sqs)
+
+- Serverless is a new paradigm in which the developers don’t have to manage servers anymore...
+
+- AWS lambda 10gb ram max, ram increase -> cpu increase
+
+- lambda synchronous invoke: ELB, API Gateway, Cloudfront, Cognito, Step Functions
+    Kinesis Data Streams, SQS & SQS FIFO, DynamoDB Streams
+        + event source mapping
+- lambda asynchronous invoke: 
+    S3, SNS, cloudwatch event/eventbridge
+        + events are placed in `event queue`
+
+
+- HTTP headers and query string parameters that are sent with multiple values are shown as arrays within the AWS Lambda event and response objects.
+
+- Lambda@Edge, used with cloudfront, for example to filter request before reaching resources
+
+(kinesis and dynamoDB)
+- stream & lambda: By default, if your function returns an error, the entire batch is reprocessed until the function succeeds, or the items in the batch expire.
+- To ensure in-order processing, processing for the affected shard is paused until the error is resolved
+
+- When you use an event source mapping to invoke your function, Lambda uses the execution role to read event data.
+
+- Use resource-based policies to give other accounts and AWS services permission to use your Lambda resources
+
+An IAM principal can access Lambda:
+    • if the IAM policy attached to the principal authorizes it (e.g. user access) 
+    • OR if the resource-based policy authorizes (e.g. service access)
+
+- Lambda Environment Variables
+
+- Make sure your AWS Lambda function has an execution role with an IAM policy that authorizes writes to CloudWatch Logs
+
+- Enable in Lambda configuration (Active Tracing). lambda x-ray
+Environment variables to communicate with X-Ray
+- _X_AMZN_TRACE_ID: contains the tracing header
+- AWS_XRAY_CONTEXT_MISSING: by default, LOG_ERROR
+- AWS_XRAY_DAEMON_ADDRESS: the X-Ray Daemon IP_ADDRESS:PORT
+
+- by default, lambda function is launched outside VPC => we need to use VPC endpoints so that lambda function can access other AWS resources
+- but a Lambda function in a VPC still cannot access internet, Deploying a Lambda function in a public subnet does not give it internet access or a public IP
+=> deploy lambda in a private subnet and give it internet access with NAT Gateway/Instance
+
+- Lambda Execution Context: is a temporary runtime environment that initializes any external dependencies of your lambda code
+- the execution context is maintained for sometime in anticipation of another lambda function invocation
+- execution context includes `/tmp` directory, it has capacity of 512mb
+- for permanent persistent, use S3
+
+- up to 1000 concurrent execution,
+- can set a "reserved concurrency" at the function level
+    + sync invoke: 429
+    + async invoke: auto retry, then to DLQ
+- if you need higher limit, open a support ticket
+
+- if the dependencies is large, zip it and upload to lambda if < 50MB, or else S3
+
+- AWS SDK comes by default with every lambda function
+
+- lambda inline cloudformation : declare lambda function directly in cloudformation json file
+
+- lambda layers: externalize dependencies to reuse them
+
+- lambda container image: deploy lambda as container images
+- can creat your own image as long as it implements the lambda runtime API
+- Test the containers locally using the Lambda Runtime Interface Emulator
+
+- When you work on a Lambda function, we work on $LATEST
+- version can be associated with alias, alias enable blue/green deployment by assigning weights to lambda function
+
+- CodeDeploy can help you automate traffic shift for lambda function
+    + linear: grow traffic every N minutes until 100%
+    + Canary: try X percentages then 100%
+    + AllAtOnce: immediate
+
+- max size of an item in dynamoDB is 400kb
+
+- dynamoDB primary key: partition key only (hash) or partition key + sort key
+
+- Read Capacity Units (RCU):
+    + Strongly consistent: 1 RCU = 1 strongly consistent read of 4KB
+    + Eventually consistent (by default):  1 RCU = 2 eventually consistent read of 4KB
+
+- Write Capacity Units (WCU):
+    + 1 WCU = 1 kb / sec
+
+
+- WCU and RCU are spread evenly between partitions
+
+- Writing data: PutItem, UpdateItem, ConditionalWrites
+- Deleting data: DeleteItem, DeleteTable
+- Reading data: GetItem, BatchGetItem (ProjectionExpression to get only attributes we want)
+
+- dynamoDB query & scan: query is more efficient and faster, scan will scan the entire table
+- Local Secondary Index (LSI):
+    + 5 LSI per table
+    + must be defined at table creation time
+
+- Global Secondary Index (GSI): the index is a new table and we can project attributes on it
+    + must define RCU/WCU for the index
+    + can add/modify GSI (not LSI)
+
+- If the writes are throttled on the GSI, then the main table will be throttled!
+
+- dynamoDB has a feature called "conditional update/delete", that means you can ensure an item has not changed before altering it
+    => optimistic locking / concurrency database
+
+- Writes go through DAX to DynamoDB
+
+- Changes in DynamoDB (Create, Update, Delete) can end up in a DynamoDB 
+
+- DynamoDB Streams:
+    + KEYS_ONLY
+    + NEW_IMAGE
+    + OLD_IMAGE
+    + NEW_AND_OLD_IMAGES
+
+- DynamoDB Streams are made of shards, just like Kinesis Data Streams
+
+- DynamoDB TTL: 
+    + automatically delete an item after an expiry date / time
+    + do not use RCU/WCU because TTL is a background task operated by the DynamoDB service itself
+
+- DynamoDB Transactions
+    + Transaction = Ability to Create / Update / Delete multiple rows in different tables at the same time
+    + Consume 2x of WCU / RCU
+
+- DynamoDB as Session State Cache
+
+- DynamoDB Write Sharding: add random suffix 
+
+- large object goes to S3 
+
+- Making changes in the API Gateway does not mean they’re effective
+- You need to make a “deployment” for them to be in effect
+- Changes are deployed to “Stages” 
+
+- Stage variables are like environment variables for API Gateway
+
+- API Gateway – Canary Deployment
+
+- API Gateway - IntegrationTypes:
+    + MOCK: return response without calling to the backend
+    + HTTP / AWS: mapping templates for the request & response
+    + AWS_PROXY: incoming request from the client is the input to Lambda, No mapping template, headers, query string parameters... are passed as arguments
+    + HTTP_PROXY
+
+- Mapping Templates Uses Velocity Template Language : for loop, if etc...
+
+- Caches are defined per stage, possible to override cache settings per method
+
+- Clients can invalidate the cache with header: Cache-Control: max-age=0
+
+- API keys: If you want to make an API available as an offering ($) to your customers
+
+- API Gateway throttles requests at10000 rps across all API
+
+- Just like Lambda Concurrency, one API that is overloaded, if not limited, can cause the other APIs to be throttled
+
+- API Gateway resource policies
+
+- API Gateway Cognito User Pools 
+
+- API Gateway – Security Lambda Authorizer 
+
+- WebSocket URL wss://[some-uniqueid].execute-api.[region].amazonaws.com/[stage-name]
+
+- AWS Serverless Application Model (SAM): Framework for developing and deploying serverless applications
+
+• Transform Header indicates it’s SAM template: Transform: 'AWS::Serverless-2016-10-31'
+• Write Code
+    • AWS::Serverless::Function
+    • AWS::Serverless::Api
+    • AWS::Serverless::SimpleTable
+• Package & Deploy:
+    • aws cloudformation package / sam package
+    • aws cloudformation deploy / sam deploy
+
+- SAM framework natively uses CodeDeploy to update Lambda functions
+
+• SAM is built on CloudFormation
+• SAM requires the Transform and Resources sections
+• Commands to know:
+    • sam build: fetch dependencies and create local deployment artifacts
+    • sam package: package and upload to Amazon S3, generate CF template 
+    • sam deploy: deploy to CloudFormation
+• SAM Policy templates for easy IAM policy definition
+• SAM is integrated with CodeDeploy to do deploy to Lambda aliases
+
+- Serverless Application Repository (SAR):  Managed repository for serverless applications, The applications are packaged using SAM
+
+- Cognito has a hosted authentication UI that you can add to your app to handle sign- up and sign-in workflows
+
+- Cognito Identity Pools (Federated Identities): Get identities for “users” so they obtain temporary AWS credentials
+
+- IAM credentials are obtained by Cognito Identity Pools through STS
+
+- AWS Step Functions: Model your workflows as state machines (one per workflow)
+- States:
+    + choice state:
+    + fail or succeed state: 
+    + pass state:
+    + wait state:
+    + map state:
+    + parallel state:
+
+- Use Retry (to retry failed state) and Catch (transition to failure path) in the State Machine to handle the errors instead of inside the Application Code
+    + Retry: evaluate from top to bottom 
+        • ErrorEquals: match a specific kind of error
+        • IntervalSeconds: initial delay before retrying
+        • BackoffRate: multiple the delay after each retry
+        • MaxAttempts: default to 3, set to 0 for never retried
+        • When max attempts are reached, the Catch kicks in
+    + Cache: evaluate from top to bottom
+        • ErrorEquals: match a specific kind of error
+        • Next: State to send to    
+        • ResultPath - A path that determines what input is sent to the state specified in the Next field.
+
+- Step Functions: Standard & Express
+
+• AppSync is a managed service that uses GraphQL
+• GraphQL makes it easy for applications to get exactly the data they need.
+• This includes combining data from one or more sources
+
+• Allows to grant limited and temporary access to AWS resources (up to 1 hour). 
+• AssumeRole: Assume roles within your account or cross account
+• AssumeRoleWithSAML: return credentials for users logged with SAML
+• AssumeRoleWithWebIdentity
+    • return creds for users logged with an IdP (Facebook Login, Google Login, OIDC compatible...) 
+    • AWS recommends against using this, and using Cognito Identity Pools instead
+• GetSessionToken: for MFA, from a user or AWS account root user
+• GetFederationToken: obtain temporary creds for a federated user
+• GetCallerIdentity: return details about the IAM user or role used in the API call
+• DecodeAuthorizationMessage: decode error message when an AWS API is denied
+
+- Using STS to Assume a Role: Temporary credentials can be valid between 15 minutes to 1 hour
+
+IAM Best Practices – IAM Roles
+• EC2 machines should have their own roles
+• Lambda functions should have their own roles
+• ECS Tasks should have their own roles (ECS_ENABLE_TASK_IAM_ROLE=true)
+• CodeBuild should have its own service role
+• Create a least-privileged role for any service that requires it
+• Create a role per application / lambda function
+
+Advanced IAM - Authorization Model
+Evaluation of Policies, simplified
+1. If there’s an explicit DENY, end decision and DENY
+2. If there’s an ALLOW, end decision with ALLOW
+3. Else DENY
+
+Dynamic Policies with IAM: Leverage the special policy variable ${aws:username}
+
+To configure many AWS services, you must pass an IAM role to the service
+The service will later assume the role and perform actions
+For this, you need the IAM permission *iam:PassRole*
+
+- Roles can only be passed to what their trust allows
+
+AWS Directory Services:
+    + AWS Managed Microsoft AD
+    + AD Connector: proxy to on premise AD
+    + Simple AD
+
+KMS – Customer Master Key (CMK)Types
+    + Symmetric (AES-256 keys)
+    + Asymmetric (RSA & ECC key pairs): Use case: encryption outside of AWS by users who can’t call the KMS API
+
+- KMS can only help in encrypting up to 4KB of data per call
+- If Data > 4KB, use envelope encryption
+
+• For the exam: anything over 4 KB of data that needs to be encrypted must use the Envelope Encryption == GenerateDataKey API
+
+- S3 Bucket Key for SSE-KMS encryption, save costs, less calls to KMS
+
+- SSM Parameter Store: Secure storage for configuration and secrets
+
+- AWS Secrets Manager: Newer service, meant for storing secrets, Mostly meant for RDS integration
+
+- cloudwatch log encryption: You cannot associate a CMK with a log group using the CloudWatch console, you must use the CloudWatch Logs API.
+
+- AWS Certificate Manager (ACM):  host public SSL certificates in AWS
+
+- AWS SWF – Simple Workflow Service: Coordinate work amongst applications
+    Step Functions is recommended to be used for new applications, except: 
+    • If you need external signals to intervene in the processes
+    • If you need child processes that return values to parent processes
+
+- AWS SES – Simple Email Service
