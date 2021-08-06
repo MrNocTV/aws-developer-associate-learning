@@ -1,7 +1,7 @@
 - Amazon EC2 Auto Scaling works with both Application Load Balancer and Network Load Balancer
 - Amazon EC2 Auto Scaling cannot add a volume to an existing instance if the existing volume is approaching capacity.
 
-- In the ecs.config file you have to configure the parameter ECS_CLUSTER='your_cluster_name' to register the container instance with a cluster named 'your_cluster_name'.
+- In the *ecs.config* file you have to configure the parameter ECS_CLUSTER='your_cluster_name' to register the container instance with a cluster named 'your_cluster_name'.
 
 - Use Resource-based policies and AWS Identity and Access Management (IAM) policies for programmatic-only access to S3 bucket objects 
 - Use Resource-based Access Control List (ACL) and IAM policies for programmatic-only access to S3 bucket objects
@@ -168,8 +168,7 @@
 
 - use --dry-run to check if we have the permissions to run the command.
 
-- when you run API calls and they fail, you can get a long error message/
-
+- when you run API calls and they fail, you can get a long error message
 - this error message can be decoded using the STS commandline: *sts decode-authorization-message*
 
 - EC2 Instance metadata: allows EC2 to learn about themselves without using an IAM role. http://169.254.169.254/latest/meta-data
