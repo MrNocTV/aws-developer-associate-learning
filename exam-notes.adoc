@@ -802,3 +802,39 @@ Some policies replace all instances during the deployment or update. This causes
 -  IAM is used as a certificate manager only when you must support HTTPS connections in a Region that is not supported by ACM.
 
 - Access Advisor feature on IAM console- To help identify the unused roles, IAM reports the last-used timestamp that represents when a role was last used to make an AWS request. Your security team can use this information to identify, analyze, and then confidently remove unused roles.
+
+
+------ TEST 2 ------
+
+- By default, basic monitoring is enabled when you create a launch template or when you use the AWS Management Console to create a launch configuration for ASG.
+
+- Signed URLs take precedence over signed cookies. If you use both signed URLs and signed cookies to control access to the same files and a viewer uses a signed URL to request a file
+
+- A Task state ("Type": "Task") represents a single unit of work performed by a state machine. 
+- *Resource* field is a required parameter for Task state.
+
+- However, the object owner can optionally share objects with others by creating a pre-signed URL, using their own security credentials, to grant time-limited permission to download the objects. The pre-signed URLs are valid only for the specified duration.
+
+- Amazon Kinesis Data Firehose is a fully managed service for delivering real-time streaming data to destinations such as Amazon Simple Storage Service (Amazon S3), Amazon Redshift, Amazon Elasticsearch Service (Amazon ES), and Splunk.
+
+- You can specify that Amazon EC2 should do one of the following when it interrupts a Spot Instance:
+    Stop the Spot Instance
+    Hibernate the Spot Instance
+    Terminate the Spot Instance
+    The default is to terminate Spot Instances when they are interrupted.
+
+- When you purchase a Reserved Instance for a Region, it's referred to as a regional Reserved Instance. A regional Reserved Instance does not provide a capacity reservation. But a Zonal Reserved Instance does.
+
+- When you create a signer, the public key is with CloudFront and private key is used to sign a portion of URL - Each signer that you use to create CloudFront signed URLs or signed cookies must have a public–private key pair. The signer uses its private key to sign the URL or cookies, and CloudFront uses the public key to verify the signature. 
+- When you create signed URLs or signed cookies, you use the private key from the signer’s key pair to sign a portion of the URL or the cookie
+- When you use the root user to manage CloudFront key pairs, you can only have up to two active CloudFront key pairs per AWS account
+
+- You must create the Lambda function from the same account as the container registry in Amazon ECR.
+
+- Due to a spike in traffic, when Lambda functions scale, this causes the portion of requests that are served by new instances to have higher latency than the rest. To enable your function to scale without fluctuations in latency, *use provisioned concurrency*. By allocating provisioned concurrency before an increase in invocations, you can ensure that all requests are served by initialized instances with very low latency.
+
+- To ensure that a function can always reach a certain level of concurrency, you can configure the function with reserved concurrency
+
+- The maximum ratio of provisioned IOPS to requested volume size (in GiB) is 50:1
+
+- UpdateItem action of DynamoDB APIs, edits an existing item's attributes or adds a new item to the table if it does not already exist
