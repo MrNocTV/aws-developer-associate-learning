@@ -838,3 +838,52 @@ Some policies replace all instances during the deployment or update. This causes
 - The maximum ratio of provisioned IOPS to requested volume size (in GiB) is 50:1
 
 - UpdateItem action of DynamoDB APIs, edits an existing item's attributes or adds a new item to the table if it does not already exist
+
+
+------ TEST 3 ------
+- IAM roles and resource-based policies delegate access across accounts only within a single partition.
+- Use bucket policies to manage cross-account control and audit the S3 object's permissions.
+- Not all AWS services support resource-based policies. This means that you can use *cross-account IAM roles* to centralize permission management when providing cross-account access to multiple services. Using cross-account IAM roles simplifies provisioning cross-account access to S3 objects that are stored in multiple S3 buckets, removing the need to manage multiple policies for S3 buckets. 
+
+- Use S3 Object Ownership to default bucket owner to be the owner of all objects in the bucket.
+    By default, when other AWS accounts upload objects to your bucket, the objects remain owned by the uploading account. With S3 Object Ownership, any new objects that are written by other accounts with the bucket-owner-full-control canned access control list (ACL) automatically become owned by the bucket owner, who then has full control of the objects.
+
+- As part of basic monitoring, Amazon EC2 sends metric data to CloudWatch in 5-minute periods. To send metric data for your instance to CloudWatch in 1-minute periods, you can enable detailed monitoring on the instance, however, this comes at an additional cost.
+- Using high-resolution custom metric, your applications can publish metrics to CloudWatch with 1-second resolution
+
+- The promotion can be done by redeploying the API to the prod stage or updating a stage variable value from the stage name of test to that of prod.
+
+- *aws ec2 monitor-instances --instance-ids i-1234567890abcdef0* - This enables detailed monitoring for a running instance.
+- *aws ec2 run-instances --image-id ami-09092360 --monitoring Enabled=true* - This syntax is used to enable detailed monitoring when launching an instance from AWS CLI.
+
+- Cognito user pools provide support for sign-up and sign-in services as well as security features such as multi-factor authentication (MFA).
+
+- AWS Step Functions is a web service that enables you to coordinate the components of distributed applications and microservices using visual workflows.
+
+-  If you terminate a container instance while it is in the STOPPED state, that container instance isn't automatically removed from the cluster. You will need to deregister your container instance in the STOPPED state by using the Amazon ECS console or AWS Command Line Interface. Once deregistered, the container instance will no longer appear as a resource in your Amazon ECS cluster.
+
+- S3 lifecycle actions are not replicated with S3 replication.
+- SRR and CRR can be configured at the S3 bucket level, a shared prefix level, or an object level using S3 object tags.
+
+- CodeBuild scales automatically, the organization does not have to do anything for scaling or for parallel builds
+
+- On Amazon S3, all objects by default are private. Only the object owner has permission to access these objects. However, the object owner can optionally share objects with others by creating a pre-signed URL, using their own security credentials, to grant time-limited permission to download the objects.
+
+- Customers may use four mechanisms for controlling access to Amazon S3 resources: Identity and Access Management (IAM) policies, bucket policies, Access Control Lists (ACLs), and Query String Authentication.
+
+- A Blue/Green deployment is used to update your applications while minimizing interruptions caused by the changes of a new application version. CodeDeploy provisions your new application version alongside the old version before rerouting your production traffic
+
+- A Classic Load Balancer with HTTP or HTTPS listeners might route more traffic to higher-capacity instance types. This distribution aims to prevent lower-capacity instance types from having too many outstanding requests. It’s a best practice to use similar instance types and configurations to reduce the likelihood of capacity gaps and traffic imbalances.
+
+- AWS Systems Manager Parameter Store provides secure, hierarchical storage for configuration data management and secrets management.
+
+- AWS Lambda: the total size of all environment variables shouldn't exceed 4 KB. There is no limit on the number of variables.
+
+- Automated backups are limited to a single AWS Region while manual snapshots and Read Replicas are supported across multiple Regions.
+
+- RDS automatic backup retention period is 0-35 days.
+
+- You should use Express Workflows for workloads with high event rates and short durations
+- Standard Workflows on AWS Step Functions are suitable for long-running, durable, and auditable workflows that can also support any human approval steps.
+
+- AWS Glue is a serverless data integration service that makes it easy to discover, prepare, and combine data for analytics, machine learning, and application development.
