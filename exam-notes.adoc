@@ -887,3 +887,33 @@ Some policies replace all instances during the deployment or update. This causes
 - Standard Workflows on AWS Step Functions are suitable for long-running, durable, and auditable workflows that can also support any human approval steps.
 
 - AWS Glue is a serverless data integration service that makes it easy to discover, prepare, and combine data for analytics, machine learning, and application development.
+
+
+------ TEST 4 ------
+
+- CodeDeploy: in-place deployment, blue-green deployment
+
+- To export a stack's output value, use the Export field in the Output section of the stack's template. To import those values, use the Fn::ImportValue function in the template for the other stacks.
+
+- An ALB has 3 possible target types: Instance, IP, Lambda
+- You cannot specify publicly routable IP addresses to an ALB
+
+- SS3-S3: AES256
+- SS3-C: must use HTTPS
+
+- All nodes in redis cluster must reside in the same region
+- While using Redis with cluster mode enabled, you cannot manually promote any of the replica nodes to primary
+
+- The simplest way to set up connections to AWS CodeCommit repositories is to configure Git credentials for CodeCommit in the IAM console, and then use those credentials for HTTPS connections. 
+
+- One read capacity unit represents two eventually consistent reads per second,
+
+- With CodeBuild, you can noticeably reduce your build time by caching dependencies in S3.
+
+- CodeDeploy: If deployment failes, a new deployment of the last known working version of the application is deployed with a new deployment ID.
+
+- You can choose to have SQS encrypt messages stored in both Standard and FIFO queues using an encryption key provided by AWS Key Management Service (KMS).
+
+- When you use the console to create a pipeline that has a CodeCommit source repository or S3 source bucket, CodePipeline creates an Amazon CloudWatch Events rule that starts your pipeline when the source changes. This is the recommended change detection method.
+
+- Data in AWS CodeCommit repositories is encrypted in transit and at rest
