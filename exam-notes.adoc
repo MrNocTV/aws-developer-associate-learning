@@ -917,3 +917,38 @@ Some policies replace all instances during the deployment or update. This causes
 - When you use the console to create a pipeline that has a CodeCommit source repository or S3 source bucket, CodePipeline creates an Amazon CloudWatch Events rule that starts your pipeline when the source changes. This is the recommended change detection method.
 
 - Data in AWS CodeCommit repositories is encrypted in transit and at rest
+
+
+------ TEST 5 ------
+
+- The X-Ray agent can assume a role to publish data into an account different from the one in which it is running. This enables you to publish data from various components of your application into a central account.
+
+- You can use Amazon CloudWatch Events to detect and react to changes in the state of a pipeline, stage, or action. Then, based on rules you create, CloudWatch Events invokes one or more target actions when a pipeline, stage, or action enters the state you specify in a rule
+
+- To enable the CloudWatch agent to send data from an on-premises server, you must specify the access key and secret key of the IAM user that you created earlier.
+
+- A lifecycle policy tells Elastic Beanstalk to delete old application versions or to delete application versions when the total number of versions for an application exceeds a specified number.
+
+- The Load Balancer generates the HTTP 503: Service unavailable error when the target groups for the load balancer have no registered targets.
+
+- For AWS CodeBuild to encrypt its build output artifacts, it needs access to an AWS KMS customer master key (CMK). By default, AWS CodeBuild uses the AWS-managed CMK for Amazon S3 in your AWS account. The following environment variable provides these details: CODEBUILD_KMS_KEY_ID
+
+*aws ecs create-service --service-name ecs-simple-service --task-definition ecs-demo --desired-count 10*
+
+- For Fargate, we can only provide IAM roles to tasks
+
+- To update your AWS Elastic Beanstalk environment to use HTTPS, you need to configure an HTTPS listener for the load balancer in your environment. *.ebextensions/securelistener-alb.config*
+
+- Develop the SAM template locally => upload the template to S3 => deploy your application to the cloud
+
+- A deployment package is a ZIP archive that contains your function code and dependencies. You need to create a deployment package if you use the Lambda API to manage functions, or if you need to include libraries and dependencies other than the AWS SDK. You can upload the package directly to Lambda, or you can use an Amazon S3 bucket, and then upload it to Lambda. If the deployment package is larger than 50 MB, you must use Amazon S3. This is the standard way of packaging Lambda functions.
+
+- For a worker environment, you need a *cron.yaml* file to define the cron jobs and do repetitive tasks.
+
+- S3 Select enables applications to retrieve only a subset of data from an object by using simple SQL expressions. 
+
+- Use the Multicontainer Docker platform if you need to run multiple containers on each instance.
+
+- Annotations are simple key-value pairs that are indexed for use with filter expressions. Use annotations to record data that you want to use to group traces in the console, or when calling the GetTraceSummaries API.
+
+- Time To Live (TTL) for DynamoDB allows you to define when items in a table expire so that they can be automatically deleted from the database.
