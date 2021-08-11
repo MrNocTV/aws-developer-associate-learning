@@ -952,3 +952,49 @@ Some policies replace all instances during the deployment or update. This causes
 - Annotations are simple key-value pairs that are indexed for use with filter expressions. Use annotations to record data that you want to use to group traces in the console, or when calling the GetTraceSummaries API.
 
 - Time To Live (TTL) for DynamoDB allows you to define when items in a table expire so that they can be automatically deleted from the database.
+
+
+------ TEST 6 ------
+
+- Never resolve the IP of a load balancer as it can change with time.
+
+- Amazon EC2 Auto Scaling works with both Application Load Balancers and Network Load Balancers 
+- Amazon EC2 Auto Scaling cannot add a volume to an existing instance if the existing volume is approaching capacity
+
+-  If the instance is already running, you can set DeleteOnTermination to False using the command line. It is not possible to update this attribute of a running instance from the AWS console.
+
+- By default, the 2MB/second/shard output is shared between all of the applications consuming data from the stream. You should use enhanced fan-out if you have multiple consumers retrieving data from a stream in parallel. With enhanced fan-out developers can register stream consumers to use enhanced fan-out and receive their own 2MB/second pipe of read throughput per shard, and this throughput automatically scales with the number of shards in a stream.
+
+- Stage variables are name-value pairs that you can define as configuration attributes associated with a deployment stage of an API. They act like environment variables and can be used in your API setup and mapping templates. With deployment stages in API Gateway, you can manage multiple release stages for each API, such as alpha, beta, and production. Using stage variables you can configure an API deployment stage to interact with different backend endpoints.
+
+- Amazon S3 delivers strong read-after-write consistency automatically, without changes to performance or availability, without sacrificing regional isolation for applications, and at no additional cost.
+
+- Each CodeDeployment group is a set of EC2 instances
+
+- By default, the health check configuration of your Auto Scaling group is set as an EC2 type that performs a status check of EC2 instances. To automate the replacement of unhealthy EC2 instances, you must change the health check type of your instance's Auto Scaling group from EC2 to ELB by using a configuration file.
+
+- SQS maximum number of messages that can be retrieved at one time = 10
+
+- RDS applies OS updates by performing maintenance on the standby, then promoting the standby to primary, and finally performing maintenance on the old primary, which becomes the new standby
+
+- Amazon RDS automatically initiates a failover to the standby, in case the primary database fails for any reason
+
+- CloudFront routes all incoming requests to the primary origin, even when a previous request failed over to the secondary origin. CloudFront only sends requests to the secondary origin after a request to the primary origin fails.
+
+- CloudFront fails over to the secondary origin only when the HTTP method of the viewer request is GET, HEAD or OPTIONS
+
+- Code commit: cloudwatch event rule
+
+- Amazon Simple Workflow Service is similar to AWS Step Function, allow for more control but increase the complexity of the application.
+
+- HTTP 504 is 'Gateway timeout' error
+- HTTP 503 indicates 'Service unavailable'
+- HTTP 403 is 'Forbidden' error
+
+- You can configure your AWS account to enforce the encryption of the new EBS volumes and snapshot copies that you create. Encryption by default is a Region-specific setting. If you enable it for a Region, you cannot disable it for individual volumes or snapshots in that Region.
+
+- You can encrypt an unencrypted snapshot by copying and enabling encryption while copying the snapshot.
+- To encrypt an EBS volume, you need to create a snapshot and then encrypt the snapshot as described earlier. From this new encrypted snapshot, you can then create an encrypted volume
+
+- If you delete a bucket and immediately list all buckets, the deleted bucket might still appear in the list
+- A process deletes an existing object and immediately tries to read it. Amazon S3 will not return any data as the object has been delete
